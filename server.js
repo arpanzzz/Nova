@@ -19,6 +19,7 @@ const TransferAssetFunction = require('./routes/transferAssetFunction'); // Impo
 const utils = require('./routes/utils'); // Import the utils route
 const register  = require('./register'); // Import the register route
 const services = require('./routes/manageServices'); // Import the services route
+const support = require('./routes/manageSupport'); // Import the support route
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -47,6 +48,7 @@ app.use('/manage-user', manageUser); // Route for getting the tables
 app.use('/transfer-asset-function', TransferAssetFunction); // Route for getting the tables
 app.use('/manage-services', services); // Route for getting the tables
 app.use('/utils', utils); // Route for getting the tables
+app.use('/manage-support', support); // Route for getting the tables
 
 
 // Start the server

@@ -5,6 +5,7 @@ const verifyToken = require('../middleware/authMiddleware');
 const isAdmin = require('../middleware/isAdmin');
 const { sql, pool, poolConnect } = require('../db');
 const { Asset_Master } = require('../models');  // Assuming you have a sequelize model for Issue_Register
+const { Op } = require('sequelize');
 
 
 // Add Asset

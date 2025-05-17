@@ -4,6 +4,55 @@ const router = express.Router();
 const verifyToken = require('../middleware/authMiddleware');
 const isAdmin = require('../middleware/isAdmin');
 const { sql, pool, poolConnect } = require('../db');
+const { Op } = require('sequelize');
+const { Company, EmployeeMast, Asset_Master } = require('../models'); // <-- Update path if needed
+
+
+// GET route for company overview
+router.get('/company-overview', async (req, res) => {
+  try {
+    // Get all companies
+    const companies = await Company.findAll();
+
+    // Map over companies and enrich with employee/device counts
+    const result = await Promise.all(companies.map(async (company) => {
+      const compCode = company.CompCode;
+
+      // Count of employees for the company
+      const employeeCount = await EmployeeMast.count({
+        where: { EmpCompID: compCode }
+      });
+
+      // Count of active devices where UserCompany = CompCode and IsActive = 1
+      const activeDeviceCount = await Asset_Master.count({
+        where: {
+          UserCompany: compCode,
+          IsActive: 1
+        }
+      });
+
+      // Count of purchased devices where OwnerCompany = CompCode
+      const purchasedDeviceCount = await Asset_Master.count({
+        where: {
+          OwnerCompany: compCode
+        }
+      });
+
+      return {
+        ...company.toJSON(),
+        employeeCount,
+        activeDeviceCount,
+        purchasedDeviceCount
+      };
+    }));
+
+    res.json(result);
+  } catch (error) {
+    console.error('Error fetching company overview:', error);
+    res.status(500).json({ error: 'Failed to fetch company overview' });
+  }
+});
+
 
 // POST: Add Company
 router.post('/add-company', verifyToken, isAdmin, [

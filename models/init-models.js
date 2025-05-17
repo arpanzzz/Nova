@@ -7,8 +7,11 @@ var _Company = require("./Company");
 var _Customers = require("./Customers");
 var _Department = require("./Department");
 var _EmployeeMast = require("./EmployeeMast");
+var _IT_Hardware_Actions = require("./IT_Hardware_Actions");
 var _Issue_Register = require("./Issue_Register");
+var _OfficeAssetBrands = require("./OfficeAssetBrands");
 var _Orders = require("./Orders");
+var _SupportCalls = require("./SupportCalls");
 var _VendorMast = require("./VendorMast");
 
 function initModels(sequelize) {
@@ -20,8 +23,11 @@ function initModels(sequelize) {
   var Customers = _Customers(sequelize, DataTypes);
   var Department = _Department(sequelize, DataTypes);
   var EmployeeMast = _EmployeeMast(sequelize, DataTypes);
+  var IT_Hardware_Actions = _IT_Hardware_Actions(sequelize, DataTypes);
   var Issue_Register = _Issue_Register(sequelize, DataTypes);
+  var OfficeAssetBrands = _OfficeAssetBrands(sequelize, DataTypes);
   var Orders = _Orders(sequelize, DataTypes);
+  var SupportCalls = _SupportCalls(sequelize, DataTypes);
   var VendorMast = _VendorMast(sequelize, DataTypes);
 
   AssetTransferRegister.belongsTo(Asset_Master, { as: "AssetCode_Asset_Master", foreignKey: "AssetCode"});
@@ -44,6 +50,20 @@ function initModels(sequelize) {
   EmployeeMast.hasMany(CallDetails, { as: "EnteredBy_CallDetails", foreignKey: "EnteredBy"});
   Issue_Register.belongsTo(EmployeeMast, { as: "IssueEmpno_EmployeeMast", foreignKey: "IssueEmpno"});
   EmployeeMast.hasMany(Issue_Register, { as: "Issue_Registers", foreignKey: "IssueEmpno"});
+  SupportCalls.belongsTo(EmployeeMast, { as: "CallAssignTo_EmployeeMast", foreignKey: "CallAssignTo"});
+  EmployeeMast.hasMany(SupportCalls, { as: "SupportCalls", foreignKey: "CallAssignTo"});
+  SupportCalls.belongsTo(EmployeeMast, { as: "CallAttainedBy_EmployeeMast", foreignKey: "CallAttainedBy"});
+  EmployeeMast.hasMany(SupportCalls, { as: "CallAttainedBy_SupportCalls", foreignKey: "CallAttainedBy"});
+  SupportCalls.belongsTo(EmployeeMast, { as: "ClosedBy_EmployeeMast", foreignKey: "ClosedBy"});
+  EmployeeMast.hasMany(SupportCalls, { as: "ClosedBy_SupportCalls", foreignKey: "ClosedBy"});
+  SupportCalls.belongsTo(EmployeeMast, { as: "Empno_EmployeeMast", foreignKey: "Empno"});
+  EmployeeMast.hasMany(SupportCalls, { as: "Empno_SupportCalls", foreignKey: "Empno"});
+  SupportCalls.belongsTo(EmployeeMast, { as: "EnteredBy_EmployeeMast", foreignKey: "EnteredBy"});
+  EmployeeMast.hasMany(SupportCalls, { as: "EnteredBy_SupportCalls", foreignKey: "EnteredBy"});
+  SupportCalls.belongsTo(EmployeeMast, { as: "EscalationTo_EmployeeMast", foreignKey: "EscalationTo"});
+  EmployeeMast.hasMany(SupportCalls, { as: "EscalationTo_SupportCalls", foreignKey: "EscalationTo"});
+  SupportCalls.belongsTo(EmployeeMast, { as: "UpdatedBy_EmployeeMast", foreignKey: "UpdatedBy"});
+  EmployeeMast.hasMany(SupportCalls, { as: "UpdatedBy_SupportCalls", foreignKey: "UpdatedBy"});
 
   return {
     AssetTransferRegister,
@@ -54,8 +74,11 @@ function initModels(sequelize) {
     Customers,
     Department,
     EmployeeMast,
+    IT_Hardware_Actions,
     Issue_Register,
+    OfficeAssetBrands,
     Orders,
+    SupportCalls,
     VendorMast,
   };
 }

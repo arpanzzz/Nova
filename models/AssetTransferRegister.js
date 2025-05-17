@@ -62,6 +62,10 @@ module.exports = function(sequelize, DataTypes) {
         model: 'EmployeeMast',
         key: 'EmpNo'
       }
+    },
+    TimeOfTransfer: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
     sequelize,

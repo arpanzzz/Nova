@@ -116,7 +116,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     CurrentEmpNo: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.CHAR(10),
       allowNull: true
     }
   }, {
